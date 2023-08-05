@@ -25,5 +25,16 @@ public class SystemConstants {
      * 没有分类
      */
     public static final String CATEGORY_STATUS_DRAFT = "1";
-
+    /**
+     * 审核通过
+     */
+    public static final String LINK_STATUS_SUCCESS = "0";
+    /**
+     * 审核未通过
+     */
+    public static final String LINK_STATUS_FAILED = "1";
+    /**
+     * 未审核
+     */
+    public static final String LINK_STATUS_WAIT = "2";
 }

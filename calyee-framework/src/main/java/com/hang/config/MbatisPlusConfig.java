@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @ClassName MbatisPlusConfig
- * @Description TODO
+ * @Description 分页拦截器
  * @Author QiuLiHang
  * @DATE 2023/8/5 17:12
  * @Version 1.0
@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MbatisPlusConfig {
-
     /**
      * 3.4.0之后版本
      * @return
