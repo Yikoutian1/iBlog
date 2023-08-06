@@ -1,6 +1,8 @@
 package com.hang.controller;
 
 import com.hang.entity.SysUser;
+import com.hang.enums.AppHttpCodeEnum;
+import com.hang.exception.SystemException;
 import com.hang.result.ResponseResult;
 import com.hang.service.BlogLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +24,19 @@ public class BlogLoginController {
     private BlogLoginService blogLoginService;
     @PostMapping("/login")
     public ResponseResult login(@RequestBody SysUser sysUser){
-        if(StringUtils.hasText(sysUser.getUserName())){
+        if(!StringUtils.hasText(sysUser.getUserName())){
             // 提示必须传用户名
-
+            throw new SystemException(AppHttpCodeEnum.REQUIRE_USERNAME);
         }
         return blogLoginService.login(sysUser);
+    }
+
+    /**
+     * 通过token退出登录
+     * @return
+     */
+    @PostMapping("/logout")
+    public ResponseResult logout(){
+        return blogLoginService.logout();
     }
 }

@@ -13,4 +13,6 @@ import com.hang.result.ResponseResult;
 
 public interface BlogLoginService {
     public ResponseResult login(SysUser sysUser);
+
+    ResponseResult logout();
 }
