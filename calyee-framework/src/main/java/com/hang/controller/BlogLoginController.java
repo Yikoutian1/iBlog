@@ -4,6 +4,7 @@ import com.hang.entity.SysUser;
 import com.hang.result.ResponseResult;
 import com.hang.service.BlogLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,10 @@ public class BlogLoginController {
     private BlogLoginService blogLoginService;
     @PostMapping("/login")
     public ResponseResult login(@RequestBody SysUser sysUser){
+        if(StringUtils.hasText(sysUser.getUserName())){
+            // 提示必须传用户名
 
+        }
         return blogLoginService.login(sysUser);
     }
 }

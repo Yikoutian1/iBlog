@@ -4,8 +4,11 @@ import com.hang.entity.LoginUser;
 import com.hang.entity.SysUser;
 import com.hang.result.ResponseResult;
 import com.hang.service.BlogLoginService;
+import com.hang.utils.BeanCopyUtils;
 import com.hang.utils.JwtUtil;
 import com.hang.utils.RedisCache;
+import com.hang.vo.BlogUserLoginVo;
+import com.hang.vo.UserInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -40,11 +43,16 @@ public class BlogLoginServiceImpl implements BlogLoginService {
         // 获取用户id,生成jwt token
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
         String userId = loginUser.getSysUser().getId().toString();
-        JwtUtil.createJWT(userId);
+        String jwt = JwtUtil.createJWT(userId);
         // 缓存到redis
         redisCache.setCacheObject("bloglogin:"+userId,loginUser);
         // 把token和userinfo封装 返回
+        UserInfoVo userInfoVo = BeanCopyUtils.copyBean(loginUser.getSysUser(), UserInfoVo.class);
 
-        return ResponseResult.okResult();
+        BlogUserLoginVo blogUserLoginVo = new BlogUserLoginVo();
+        blogUserLoginVo.setToken(jwt);
+        blogUserLoginVo.setUserInfo(userInfoVo);
+
+        return ResponseResult.okResult(blogUserLoginVo);
     }
 }
