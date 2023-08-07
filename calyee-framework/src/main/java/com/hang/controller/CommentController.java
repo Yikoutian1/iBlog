@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController{
     @Autowired
     private CommentService commentService;
-    @GetMapping("/linkCommentList")
+    @GetMapping("/commentList")
     public ResponseResult linkCommentList(Integer pageNum,Integer pageSize,Long articleId){
         return commentService.linkCommentList(pageNum,pageSize,articleId);
     }

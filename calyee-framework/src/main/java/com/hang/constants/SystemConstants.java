@@ -37,4 +37,16 @@ public class SystemConstants {
      * 未审核
      */
     public static final String LINK_STATUS_WAIT = "2";
+    /**
+     * 1代表友链评论
+     */
+    public static final String LINK_COMMENT = "1";
+    /**
+     * 0代表文章评论，
+     */
+    public static final String ARTICLE_COMMENT = "0";
+    /**
+     * 根评论 rootId为-1
+     */
+    public static final String ROOT_COMMENT = "-1";
 }
