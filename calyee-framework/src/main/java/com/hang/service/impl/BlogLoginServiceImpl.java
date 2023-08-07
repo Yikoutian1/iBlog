@@ -64,8 +64,8 @@ public class BlogLoginServiceImpl implements BlogLoginService {
     @Override
     public ResponseResult logout() {
         //获取token 解析获取userid    从SecurityContextHolder
-        Authentication authenticate = SecurityContextHolder.getContext().getAuthentication();
-        LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         //获取userid
         Long userid = loginUser.getSysUser().getId();
         //删除redis中的用户信息

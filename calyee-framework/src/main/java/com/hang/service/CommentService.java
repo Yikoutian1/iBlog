@@ -14,5 +14,7 @@ import com.hang.result.ResponseResult;
 public interface CommentService extends IService<Comment> {
 
     ResponseResult linkCommentList(Integer pageNum, Integer pageSize, Long articleId);
+
+    ResponseResult addComment(Comment comment);
 }
 

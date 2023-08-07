@@ -2,6 +2,7 @@ package com.hang.controller;
 
 
 
+import com.hang.entity.Comment;
 import com.hang.result.ResponseResult;
 import com.hang.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,11 @@ public class CommentController{
     @GetMapping("/commentList")
     public ResponseResult linkCommentList(Integer pageNum,Integer pageSize,Long articleId){
         return commentService.linkCommentList(pageNum,pageSize,articleId);
+    }
+    @PostMapping
+    public ResponseResult addComment(@RequestBody Comment comment){
+        commentService.addComment(comment);
+        return ResponseResult.okResult();
     }
 }
 

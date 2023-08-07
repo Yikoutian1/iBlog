@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hang.constants.SystemConstants;
 import com.hang.entity.Comment;
 import com.hang.entity.SysUser;
+import com.hang.enums.AppHttpCodeEnum;
+import com.hang.exception.SystemException;
 import com.hang.mapper.CommentMapper;
 import com.hang.mapper.SysUserMapper;
 import com.hang.result.ResponseResult;
@@ -16,6 +18,7 @@ import com.hang.vo.CommentVo;
 import com.hang.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -50,11 +53,25 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         List<CommentVo> commentVoList = toCommentVoList(page.getRecords());
         // 查询根评论对应的子评论集合,赋值给对应的属性(children)
         for (CommentVo vo : commentVoList) {
-            Long rootId = vo.getRootId();
-            List<CommentVo> children = getChildren(rootId);
+            Long id = vo.getId();
+            List<CommentVo> children = getChildren(id);
             vo.setChildren(children);
         }
         return ResponseResult.okResult(new PageVo(commentVoList,page.getTotal()));
+    }
+
+    /**
+     * 添加评论
+     * @param comment
+     */
+    @Override
+    public ResponseResult addComment(Comment comment) {
+        // 评论不能为空
+        if(!StringUtils.hasText(comment.getContent())){
+            throw new SystemException(AppHttpCodeEnum.CONTENT_NOT_NULL);
+        }
+        save(comment);
+        return ResponseResult.okResult();
     }
 
     /**
@@ -72,8 +89,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             vo.setUsername(nikeName);
             // 通过toCommentUserId查询用户昵称并赋值
             // 如果toCommentId不为-1 才进行查询
-            if(vo.getToCommentId() != -1){
-                String toCommentUserName = sysUserService.getById(vo.getToCommentId()).getNickName();
+            if(vo.getToCommentUserId() != -1){
+                String toCommentUserName = sysUserService.getById(vo.getToCommentUserId()).getNickName();
                 vo.setToCommentUserName(toCommentUserName);
             }
         }

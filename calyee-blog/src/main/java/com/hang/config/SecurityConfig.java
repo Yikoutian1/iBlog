@@ -53,6 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("logout").anonymous()
                 // jwt过滤器测试用，如果测试没有问题吧这里删除了
                 .antMatchers("/link/getAllLink").authenticated()
+                // 不带token不能评论
+                .antMatchers("/comment").authenticated()
                 // 除上面外的所有请求全部不需要认证即可访问
                 .anyRequest().permitAll();
 
