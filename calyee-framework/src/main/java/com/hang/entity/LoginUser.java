@@ -21,7 +21,7 @@ import java.util.Collection;
 @NoArgsConstructor
 public class LoginUser implements UserDetails {
 
-    private SysUser sysUser;
+    private User user;
 
 
     @Override
@@ -31,12 +31,12 @@ public class LoginUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        return sysUser.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return sysUser.getUserName();
+        return user.getUserName();
     }
 
     @Override

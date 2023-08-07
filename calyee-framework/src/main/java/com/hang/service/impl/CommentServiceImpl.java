@@ -5,14 +5,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hang.constants.SystemConstants;
 import com.hang.entity.Comment;
-import com.hang.entity.SysUser;
 import com.hang.enums.AppHttpCodeEnum;
 import com.hang.exception.SystemException;
 import com.hang.mapper.CommentMapper;
-import com.hang.mapper.SysUserMapper;
 import com.hang.result.ResponseResult;
 import com.hang.service.CommentService;
-import com.hang.service.SysUserService;
+import com.hang.service.UserService;
 import com.hang.utils.BeanCopyUtils;
 import com.hang.vo.CommentVo;
 import com.hang.vo.PageVo;
@@ -31,7 +29,7 @@ import java.util.List;
 @Service("commentService")
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements CommentService {
     @Autowired
-    private SysUserService sysUserService;
+    private UserService userService;
     /**
      * 评论列表
      * @param pageNum
@@ -40,12 +38,16 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      * @return
      */
     @Override
-    public ResponseResult linkCommentList(Integer pageNum, Integer pageSize, Long articleId) {
+    public ResponseResult commentList(String status,Integer pageNum, Integer pageSize, Long articleId) {
         LambdaQueryWrapper<Comment> queryWrapper = new LambdaQueryWrapper<>();
         // 对articleId进行判断
-        queryWrapper.eq(Comment::getArticleId,articleId);
+        queryWrapper.eq(SystemConstants.ARTICLE_COMMENT.equals(status),Comment::getArticleId,articleId);
         // 根评论 rootId为-1
         queryWrapper.eq(Comment::getRootId,SystemConstants.ROOT_COMMENT);
+
+        // 评论类型
+        queryWrapper.eq(Comment::getType,status);
+
         // 分页
         Page<Comment> page = new Page<>(pageNum,pageSize);
         page(page,queryWrapper);
@@ -85,12 +87,12 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         // 通过creatBy查询用户昵称并赋值
         for (CommentVo vo : commentVos) {
             // getCreateBy对应的用户id
-            String nikeName = sysUserService.getById(vo.getCreateBy()).getNickName();
+            String nikeName = userService.getById(vo.getCreateBy()).getNickName();
             vo.setUsername(nikeName);
             // 通过toCommentUserId查询用户昵称并赋值
             // 如果toCommentId不为-1 才进行查询
             if(vo.getToCommentUserId() != -1){
-                String toCommentUserName = sysUserService.getById(vo.getToCommentUserId()).getNickName();
+                String toCommentUserName = userService.getById(vo.getToCommentUserId()).getNickName();
                 vo.setToCommentUserName(toCommentUserName);
             }
         }

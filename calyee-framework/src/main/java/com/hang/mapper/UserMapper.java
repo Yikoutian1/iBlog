@@ -1,7 +1,7 @@
 package com.hang.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hang.entity.SysUser;
+import com.hang.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 
@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2023-08-06 11:11:29
  */
 @Mapper
-public interface SysUserMapper extends BaseMapper<SysUser> {
+public interface UserMapper extends BaseMapper<User> {
 
 }
 

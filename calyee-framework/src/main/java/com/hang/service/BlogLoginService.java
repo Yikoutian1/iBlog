@@ -1,6 +1,6 @@
 package com.hang.service;
 
-import com.hang.entity.SysUser;
+import com.hang.entity.User;
 import com.hang.result.ResponseResult;
 
 /**
@@ -12,7 +12,7 @@ import com.hang.result.ResponseResult;
  */
 
 public interface BlogLoginService {
-    public ResponseResult login(SysUser sysUser);
+    public ResponseResult login(User user);
 
     ResponseResult logout();
 }

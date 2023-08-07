@@ -1,7 +1,7 @@
 package com.hang.service.impl;
 
 import com.hang.entity.LoginUser;
-import com.hang.entity.SysUser;
+import com.hang.entity.User;
 import com.hang.result.ResponseResult;
 import com.hang.service.BlogLoginService;
 import com.hang.utils.BeanCopyUtils;
@@ -33,8 +33,8 @@ public class BlogLoginServiceImpl implements BlogLoginService {
     @Autowired
     private RedisCache redisCache;
     @Override
-    public ResponseResult login(SysUser sysUser) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(sysUser.getUserName(),sysUser.getPassword());
+    public ResponseResult login(User user) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword());
         // 默认在内存中查询 ,需要重写UserDetailService让其在数据库查
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         // 判断是否认证通过
@@ -43,12 +43,12 @@ public class BlogLoginServiceImpl implements BlogLoginService {
         }
         // 获取用户id,生成jwt token
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
-        String userId = loginUser.getSysUser().getId().toString();
+        String userId = loginUser.getUser().getId().toString();
         String jwt = JwtUtil.createJWT(userId);
         // 缓存到redis
         redisCache.setCacheObject("bloglogin:"+userId,loginUser);
         // 把token和userinfo封装 返回
-        UserInfoVo userInfoVo = BeanCopyUtils.copyBean(loginUser.getSysUser(), UserInfoVo.class);
+        UserInfoVo userInfoVo = BeanCopyUtils.copyBean(loginUser.getUser(), UserInfoVo.class);
 
         BlogUserLoginVo blogUserLoginVo = new BlogUserLoginVo();
         blogUserLoginVo.setToken(jwt);
@@ -67,7 +67,7 @@ public class BlogLoginServiceImpl implements BlogLoginService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         //获取userid
-        Long userid = loginUser.getSysUser().getId();
+        Long userid = loginUser.getUser().getId();
         //删除redis中的用户信息
         redisCache.deleteObject("bloglogin:"+userid);
         return ResponseResult.okResult();

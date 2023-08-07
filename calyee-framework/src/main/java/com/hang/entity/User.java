@@ -2,11 +2,9 @@ package com.hang.entity;
 
 import java.util.Date;
 
-import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 /**
  * 用户表(SysUser)表实体类
@@ -19,7 +17,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("sys_user")
-public class SysUser  {
+public class User {
     //主键@TableId
     private Long id;
 

@@ -1,6 +1,6 @@
 package com.hang.controller;
 
-import com.hang.entity.SysUser;
+import com.hang.entity.User;
 import com.hang.enums.AppHttpCodeEnum;
 import com.hang.exception.SystemException;
 import com.hang.result.ResponseResult;
@@ -23,12 +23,12 @@ public class BlogLoginController {
     @Autowired
     private BlogLoginService blogLoginService;
     @PostMapping("/login")
-    public ResponseResult login(@RequestBody SysUser sysUser){
-        if(!StringUtils.hasText(sysUser.getUserName())){
+    public ResponseResult login(@RequestBody User user){
+        if(!StringUtils.hasText(user.getUserName())){
             // 提示必须传用户名
             throw new SystemException(AppHttpCodeEnum.REQUIRE_USERNAME);
         }
-        return blogLoginService.login(sysUser);
+        return blogLoginService.login(user);
     }
 
     /**
