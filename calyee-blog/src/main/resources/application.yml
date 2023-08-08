@@ -36,3 +36,9 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
       id-type: auto
+
+# 七牛云
+oss:
+  accessKey: cuwMLlcQi3v83Q9WmNeqn2FSq2TCvE8C5ok7McfH
+  secretKey: V-LBcGJAuptis_hXNsWLuuJg-wioAEBsN9zFiMKT
+  bucket: calyee-blog

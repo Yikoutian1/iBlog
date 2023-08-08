@@ -1,7 +1,10 @@
 package com.hang.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hang.dto.UserInfoDTO;
 import com.hang.entity.User;
+import com.hang.result.ResponseResult;
+import com.hang.vo.UserInfoVo;
 
 
 /**
@@ -12,5 +15,10 @@ import com.hang.entity.User;
  */
 public interface UserService extends IService<User> {
 
+    ResponseResult userInfo();
+
+    ResponseResult updateUserInfo(User user);
+
+    ResponseResult regiseter(User user);
 }
 
