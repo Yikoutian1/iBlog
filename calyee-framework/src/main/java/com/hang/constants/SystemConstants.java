@@ -49,4 +49,8 @@ public class SystemConstants {
      * 根评论 rootId为-1
      */
     public static final String ROOT_COMMENT = "-1";
+    /**
+     * redis 文章浏览量
+     */
+    public static final String ARTICLE_VIEW_COUNT = "article:viewCount";
 }

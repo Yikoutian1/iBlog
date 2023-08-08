@@ -11,12 +11,14 @@ import com.hang.mapper.ArticleMapper;
 import com.hang.service.ArticleService;
 import com.hang.service.CategoryService;
 import com.hang.utils.BeanCopyUtils;
+import com.hang.utils.RedisCache;
 import com.hang.vo.ArticleDetailtVo;
 import com.hang.vo.ArticleListVo;
 import com.hang.vo.HotArticleVo;
 import com.hang.vo.PageVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,7 +37,8 @@ import java.util.stream.Collectors;
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
     @Autowired
     private CategoryService categoryService;
-
+    @Autowired
+    private RedisCache redisCache;
     /**
      * 查询热门文章
      *
@@ -121,5 +124,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             articleDetailtVo.setCategoryName(category.getName());
         }
         return ResponseResult.okResult(articleDetailtVo);
+    }
+
+    @Override
+    public ResponseResult updateViewCount(Long id) {
+        // 更新redis中对应id的浏览量
+        redisCache.incrementCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT,id.toString(),1);
+        return ResponseResult.okResult();
     }
 }

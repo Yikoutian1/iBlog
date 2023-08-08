@@ -124,6 +124,15 @@ public class RedisCache
     }
 
     /**
+     * 对redis某个hash结构递增操作
+     * @param key  Redis 中哈希（hash）的键,参数用于指定要操作的哈希的键
+     * @param hKey 哈希中的字段（field）
+     * @param v    这是一个增量值，表示你要将哈希中的特定字段的值增加多少
+     */
+    public void incrementCacheMapValue(String key,String hKey,long v){
+        redisTemplate.boundHashOps(key).increment(hKey, v);
+    }
+    /**
      * 缓存Set
      *
      * @param key 缓存键值

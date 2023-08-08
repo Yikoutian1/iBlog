@@ -56,5 +56,10 @@ public class Article {
 //    代表数据库不存在这个字段
     @TableField(exist = false)
     private String categoryName;
+
+    public Article(Long id, long viewCount) {
+        this.id = id;
+        this.viewCount = viewCount;
+    }
 }
 
