@@ -8,6 +8,7 @@ import com.hang.entity.User;
 import com.hang.result.ResponseResult;
 import com.hang.service.UserService;
 import com.hang.vo.UserInfoVo;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/user")
+@Api(tags = "用户相关接口")
 public class UserController{
     @Autowired
     private UserService userService;

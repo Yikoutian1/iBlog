@@ -4,6 +4,7 @@ package com.hang.controller;
 
 import com.hang.result.ResponseResult;
 import com.hang.service.LinkService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/link")
+@Api(tags = "友链相关接口")
 public class LinkController{
     @Autowired
     private LinkService linkService;

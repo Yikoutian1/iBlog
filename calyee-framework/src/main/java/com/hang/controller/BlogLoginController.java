@@ -5,6 +5,7 @@ import com.hang.enums.AppHttpCodeEnum;
 import com.hang.exception.SystemException;
 import com.hang.result.ResponseResult;
 import com.hang.service.BlogLoginService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Version 1.0
  */
 @RestController
+@Api(tags = "登录相关接口")
 public class BlogLoginController {
     @Autowired
     private BlogLoginService blogLoginService;

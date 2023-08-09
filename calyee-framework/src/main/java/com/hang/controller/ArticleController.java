@@ -2,19 +2,21 @@ package com.hang.controller;
 
 import com.hang.result.ResponseResult;
 import com.hang.service.ArticleService;
+import io.swagger.annotations.Api;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
  * @ClassName ArticleController
- * @Description TODO
+ * @Description 文章
  * @Author QiuLiHang
  * @DATE 2023/8/4 15:43
  * @Version 1.0
  */
 @RestController
 @RequestMapping("/article")
+@Api(tags = "文章相关接口")
 public class ArticleController {
     @Autowired
     private ArticleService articleService;
