@@ -3,11 +3,9 @@ package com.hang.controller;
 
 
 import com.hang.annotation.SystemLog;
-import com.hang.dto.UserInfoDTO;
 import com.hang.entity.User;
 import com.hang.result.ResponseResult;
 import com.hang.service.UserService;
-import com.hang.vo.UserInfoVo;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

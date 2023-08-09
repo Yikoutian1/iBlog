@@ -2,7 +2,6 @@ package com.hang.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hang.dto.UserInfoDTO;
 import com.hang.entity.User;
 import com.hang.enums.AppHttpCodeEnum;
 import com.hang.exception.SystemException;
@@ -16,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
-import java.util.Objects;
 
 /**
  * 用户表(SysUser)表服务实现类
