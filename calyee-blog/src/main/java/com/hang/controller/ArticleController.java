@@ -3,7 +3,6 @@ package com.hang.controller;
 import com.hang.result.ResponseResult;
 import com.hang.service.ArticleService;
 import io.swagger.annotations.Api;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
