@@ -56,6 +56,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         // page的构造方法
         page(page, queryWrapper);
         List<Article> records = page.getRecords();
+
         // 原方案
 //        List<HotArticleVo> hotArticleVos = new ArrayList<>();
 //        records.forEach(item->{
@@ -67,6 +68,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 //        });
         // 封装bean拷贝工具类后
         List<HotArticleVo> hotArticleVos = BeanCopyUtils.copyBeanList(records, HotArticleVo.class);
+        // 浏览量从redis中获取
+        for (HotArticleVo vo : hotArticleVos) {
+            Integer viewCount = redisCache.getCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT, vo.getId().toString());
+            vo.setViewCount(viewCount != null ? viewCount.longValue() : 0L);
+        }
         return ResponseResult.okResult(hotArticleVos);
     }
 
@@ -107,6 +113,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         // 封装查询结果
         // 使用封装的工具类
         List<ArticleListVo> articleListVos = BeanCopyUtils.copyBeanList(records, ArticleListVo.class);
+        // 浏览量从redis中获取
+        for(ArticleListVo listVo: articleListVos){
+            Integer viewCount = redisCache.getCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT, listVo.getId().toString());
+            listVo.setViewCount(viewCount.longValue());
+        }
+
         PageVo pageVo = new PageVo(articleListVos, page.getTotal());
         return ResponseResult.okResult(pageVo);
     }
@@ -115,6 +127,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public ResponseResult getArticleDetail(Integer id) {
         // 直接调用mybaitsplus里面的getById查询
         Article article = getById(id);
+        // 从redis中获取viewCount
+        Integer viewCount = redisCache.getCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT, id.toString());
+        article.setViewCount(viewCount.longValue());
+
         ArticleDetailtVo articleDetailtVo = BeanCopyUtils.copyBean(article, ArticleDetailtVo.class);
         Long categoryId = articleDetailtVo.getCategoryId();
         Category category = categoryService.getById(categoryId);
