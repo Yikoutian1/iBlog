@@ -53,4 +53,20 @@ public class SystemConstants {
      * redis 文章浏览量
      */
     public static final String ARTICLE_VIEW_COUNT = "article:viewCount";
+    /**
+     * 管理员标识
+     */
+    public static final Long ADMIN = 1L;
+    /**
+     * 菜单
+     */
+    public static final String MENU = "C";
+    /**
+     * 按钮
+     */
+    public static final String BUTTON = "F";
+    /**
+     * 状态正常
+     */
+    public static final Integer STATUS_NORMAL = 0;
 }

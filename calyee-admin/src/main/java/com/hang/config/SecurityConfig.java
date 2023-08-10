@@ -48,8 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                // 对于登录接口 允许匿名访问
-//                .antMatchers("/login").anonymous()
+                // 对于登录接口 允许匿名访问 放行
+                .antMatchers("/user/login").anonymous()
 //                // 注销接口需要认证才能访问
 //                .antMatchers("logout").anonymous()
 //                //个人信息接口必须登录后才能访问
@@ -57,8 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // jwt过滤器测试用，如果测试没有问题吧这里删除了
 //                .antMatchers("/link/getAllLink").authenticated()
 //                .antMatchers("/upload").authenticated()
-                // 除上面外的所有请求全部不需要认证即可访问
-                .anyRequest().permitAll();
+                // 需要认证才能访问
+                .anyRequest().authenticated();
 
         //配置异常处理器
         http.exceptionHandling()
