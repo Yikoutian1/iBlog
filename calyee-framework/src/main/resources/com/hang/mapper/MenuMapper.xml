@@ -9,10 +9,55 @@
         FROM sys_user_role ur
                  LEFT JOIN sys_role_menu rm ON ur.role_id = rm.role_id
                  LEFT JOIN sys_menu m ON rm.menu_id = m.id
-        WHERE 1=1
-        AND ur.user_id = #{id}
-        AND m.status = 0
-        AND m.menu_type in('F','C')
-        AND m.del_flag = 0
+        WHERE 1 = 1
+          AND ur.user_id = #{id}
+          AND m.status = 0
+          AND m.menu_type in ('F', 'C')
+          AND m.del_flag = 0
+    </select>
+    <select id="selectAllRouterMenu" resultType="com.hang.entity.Menu">
+        SELECT DISTINCT m.id,
+                        m.parent_id,
+                        m.menu_name,
+                        m.path,
+                        m.component,
+                        m.visible,
+                        m.status,
+                        IFNULL(m.perms, '') AS perms,
+                        m.is_frame,
+                        m.menu_type,
+                        m.icon,
+                        m.order_num,
+                        m.create_time
+        FROM `sys_menu` m
+        WHERE 1 = 1
+          AND m.`menu_type` IN ('C', 'M')
+          AND m.`status` = 0
+          AND m.`del_flag` = 0
+        ORDER BY m.parent_id, m.order_num
+    </select>
+    <select id="selectRouterMenuTreeByUserId" resultType="com.hang.entity.Menu">
+        SELECT DISTINCT m.id,
+                        m.parent_id,
+                        m.menu_name,
+                        m.path,
+                        m.component,
+                        m.visible,
+                        m.status,
+                        IFNULL(m.perms, '') AS perms,
+                        m.is_frame,
+                        m.menu_type,
+                        m.icon,
+                        m.order_num,
+                        m.create_time
+        FROM `sys_user_role` ur
+                 LEFT JOIN `sys_role_menu` rm ON ur.`role_id` = rm.`role_id`
+                 LEFT JOIN `sys_menu` m ON m.`id` = rm.`menu_id`
+        WHERE 1 = 1
+          AND ur.`user_id` = #{userId}
+          AND m.`menu_type` IN ('C', 'M')
+          AND m.`status` = 0
+          AND m.`del_flag` = 0
+        ORDER BY m.parent_id, m.order_num
     </select>
 </mapper>

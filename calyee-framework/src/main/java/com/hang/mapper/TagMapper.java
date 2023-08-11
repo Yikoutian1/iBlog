@@ -1,8 +1,14 @@
 package com.hang.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hang.dto.TagListDto;
 import com.hang.entity.Tag;
+import com.hang.result.ResponseResult;
+import com.hang.vo.TagVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Date;
 
 
 /**
@@ -14,5 +20,8 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface TagMapper extends BaseMapper<Tag> {
 
+    TagVo selectByIdMapper(@Param("id") Long id);
+
+    void updateTagInfo(@Param("tag") Tag tag);
 }
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -23,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @Version 1.0
  */
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -48,23 +50,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                // 对于登录接口 允许匿名访问 放行
+                // 对于登录接口 允许匿名访问
                 .antMatchers("/user/login").anonymous()
-//                // 注销接口需要认证才能访问
-//                .antMatchers("logout").anonymous()
-//                //个人信息接口必须登录后才能访问
+//                //注销接口需要认证才能访问
+//                .antMatchers("/logout").authenticated()
 //                .antMatchers("/user/userInfo").authenticated()
-                // jwt过滤器测试用，如果测试没有问题吧这里删除了
-//                .antMatchers("/link/getAllLink").authenticated()
 //                .antMatchers("/upload").authenticated()
-                // 需要认证才能访问
+                // 除上面外的所有请求全部不需要认证即可访问
                 .anyRequest().authenticated();
 
         //配置异常处理器
         http.exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler);
-
+        //关闭默认的注销功能
         http.logout().disable();
         //把jwtAuthenticationTokenFilter添加到SpringSecurity的过滤器链中
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);

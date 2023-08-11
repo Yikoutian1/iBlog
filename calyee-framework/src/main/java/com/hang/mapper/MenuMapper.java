@@ -18,5 +18,9 @@ import java.util.List;
 public interface MenuMapper extends BaseMapper<Menu> {
 
     List<String> selectPermsByUserId(@Param("id") Long id);
+
+    List<Menu> selectAllRouterMenu();
+
+    List<Menu> selectRouterMenuTreeByUserId(@Param("userId") Long userId);
 }
 
