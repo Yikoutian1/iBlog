@@ -23,5 +23,7 @@ public interface TagMapper extends BaseMapper<Tag> {
     TagVo selectByIdMapper(@Param("id") Long id);
 
     void updateTagInfo(@Param("tag") Tag tag);
+
+    void insertArticleTags(@Param("articleId") Long articleId, @Param("item") Long item);
 }
 

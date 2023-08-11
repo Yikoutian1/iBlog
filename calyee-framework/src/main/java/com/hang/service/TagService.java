@@ -26,5 +26,9 @@ public interface TagService extends IService<Tag> {
     ResponseResult<TagVo> selectById(Long id);
 
     ResponseResult updateTagInfo(TagListDto tagListDto);
+
+    List<TagVo> listAllTag();
+
+    void saveToArticleTag(Long articleId, List<Long> tags);
 }
 

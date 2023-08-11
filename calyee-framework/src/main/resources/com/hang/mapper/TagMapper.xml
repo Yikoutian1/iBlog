@@ -3,6 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hang.mapper.TagMapper">
+    <insert id="insertArticleTags">
+        insert into sg_article_tag(article_id,tag_id)
+        value (#{articleId},#{item})
+    </insert>
     <update id="updateTagInfo">
         update sg_tag
         set name        = #{tag.name},

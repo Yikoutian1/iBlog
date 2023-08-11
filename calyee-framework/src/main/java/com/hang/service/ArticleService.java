@@ -1,6 +1,7 @@
 package com.hang.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hang.dto.ArticleDto;
 import com.hang.result.ResponseResult;
 import com.hang.entity.Article;
 
@@ -20,4 +21,6 @@ public interface ArticleService extends IService<Article> {
     ResponseResult getArticleDetail(Integer id);
 
     ResponseResult updateViewCount(Long id);
+
+    void saveArticle(ArticleDto articleDto);
 }

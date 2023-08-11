@@ -66,6 +66,28 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
         baseMapper.updateTagInfo(tag);
         return ResponseResult.okResult();
     }
+
+    @Override
+    public List<TagVo> listAllTag() {
+        LambdaQueryWrapper<Tag> wrapper = new LambdaQueryWrapper<>();
+        wrapper.select(Tag::getId,Tag::getName);
+        List<Tag> list = list(wrapper);
+        List<TagVo> tagVos = BeanCopyUtils.copyBeanList(list, TagVo.class);
+        return tagVos;
+    }
+
+    /**
+     * 插入tag 和 article 关系表
+     * @param articleId
+     * @param tags
+     */
+    @Override
+    public void saveToArticleTag(Long articleId, List<Long> tags) {
+        tags.forEach(item->{
+            baseMapper.insertArticleTags(articleId,item);
+        });
+    }
+
     @Override
     public void deleteTagById(List<Long> id) {
         removeByIds(id);

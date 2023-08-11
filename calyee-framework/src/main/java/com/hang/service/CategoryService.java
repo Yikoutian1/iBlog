@@ -3,6 +3,9 @@ package com.hang.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hang.entity.Category;
 import com.hang.result.ResponseResult;
+import com.hang.vo.CategoryVo;
+
+import java.util.List;
 
 
 /**
@@ -14,5 +17,7 @@ import com.hang.result.ResponseResult;
 public interface CategoryService extends IService<Category> {
 
     ResponseResult getCategoryList();
+
+    List<CategoryVo> listAllCategory();
 }
 

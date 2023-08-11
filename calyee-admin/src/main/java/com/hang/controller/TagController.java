@@ -58,6 +58,11 @@ public class TagController {
     public ResponseResult<TagVo> selectById(@PathVariable Long id){
         return tagService.selectById(id);
     }
+    @GetMapping("/listAllTag")
+    public ResponseResult listAllTag(){
+        List<TagVo> list = tagService.listAllTag();
+        return ResponseResult.okResult(list);
+    }
     @PutMapping
     public ResponseResult updateTagInfo(@RequestBody TagListDto tagListDto){
         return tagService.updateTagInfo(tagListDto);

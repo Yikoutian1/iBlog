@@ -5,12 +5,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hang.constants.SystemConstants;
 import com.hang.entity.Article;
 import com.hang.entity.Category;
+import com.hang.entity.Tag;
 import com.hang.mapper.CategoryMapper;
 import com.hang.result.ResponseResult;
 import com.hang.service.ArticleService;
 import com.hang.service.CategoryService;
 import com.hang.utils.BeanCopyUtils;
 import com.hang.vo.CategoryVo;
+import com.hang.vo.TagVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +50,15 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         // 封装vo
         List<CategoryVo> categoryVos = BeanCopyUtils.copyBeanList(categories, CategoryVo.class);
         return ResponseResult.okResult(categoryVos);
+    }
+
+    @Override
+    public List<CategoryVo> listAllCategory() {
+        LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Category::getStatus, SystemConstants.NORMAL);
+        List<Category> list = list(wrapper);
+        List<CategoryVo> categoryVos = BeanCopyUtils.copyBeanList(list, CategoryVo.class);
+        return categoryVos;
     }
 }
 

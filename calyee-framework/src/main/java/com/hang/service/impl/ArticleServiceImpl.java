@@ -4,14 +4,17 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hang.constants.SystemConstants;
+import com.hang.dto.ArticleDto;
 import com.hang.entity.Category;
 import com.hang.result.ResponseResult;
 import com.hang.entity.Article;
 import com.hang.mapper.ArticleMapper;
 import com.hang.service.ArticleService;
 import com.hang.service.CategoryService;
+import com.hang.service.TagService;
 import com.hang.utils.BeanCopyUtils;
 import com.hang.utils.RedisCache;
+import com.hang.utils.SecurityUtils;
 import com.hang.vo.ArticleDetailtVo;
 import com.hang.vo.ArticleListVo;
 import com.hang.vo.HotArticleVo;
@@ -22,6 +25,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -37,6 +41,8 @@ import java.util.stream.Collectors;
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private TagService tagService;
     @Autowired
     private RedisCache redisCache;
     /**
@@ -147,5 +153,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         // 更新redis中对应id的浏览量
         redisCache.incrementCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT,id.toString(),1);
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public void saveArticle(ArticleDto articleDto) {
+        // 首先需要保存当前前端传回来的数据
+        Article article = BeanCopyUtils.copyBean(articleDto, Article.class);
+        save(article);
+        // 然后对article_tag表进行插入(需要把刚刚插入的Article_id查出来)
+        Long articleId = article.getId();
+        tagService.saveToArticleTag(articleId,articleDto.getTags());
     }
 }
