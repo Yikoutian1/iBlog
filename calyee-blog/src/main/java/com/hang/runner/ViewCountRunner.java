@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 /**
  * @ClassName ViewCountRunner
- * @Description TODO
+ * @Description 在启动之前对浏览量进行查询 然后缓存到redis里面
  * @Author QiuLiHang
  * @DATE 2023/8/8 20:01
  * @Version 1.0

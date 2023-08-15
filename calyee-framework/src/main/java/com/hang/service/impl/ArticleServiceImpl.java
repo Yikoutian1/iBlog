@@ -111,7 +111,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             // 获取到了分类id
 //第一步            Long cId = item.getCategoryId();
             // 根据id查询categoryName
-//第一步            Category category = categoryService.getById(cId);
+//第一步          records  Category category = categoryService.getById(cId);
 //第二步优化            item.setCategoryName(categoryService.getById(item.getCategoryId()).getName());
             // 需要在实体类中加上注解 @Accessors(chain = true) // 设置set返回类型为当前对象本身
             return item.setCategoryName(categoryService.getById(item.getCategoryId()).getName());
@@ -131,7 +131,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public ResponseResult getArticleDetail(Integer id) {
-        // 直接调用mybaitsplus里面的getById查询
+        // 直接调用mybatis plus里面的getById查询
         Article article = getById(id);
         // 从redis中获取viewCount
         Integer viewCount = redisCache.getCacheMapValue(SystemConstants.ARTICLE_VIEW_COUNT, id.toString());
