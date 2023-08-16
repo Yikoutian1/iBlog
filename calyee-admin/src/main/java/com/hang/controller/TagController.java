@@ -11,6 +11,8 @@ import com.hang.utils.SecurityUtils;
 import com.hang.vo.PageVo;
 import com.hang.vo.TagVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -58,6 +60,7 @@ public class TagController {
     public ResponseResult<TagVo> selectById(@PathVariable Long id){
         return tagService.selectById(id);
     }
+//    @PreAuthorize("")
     @GetMapping("/listAllTag")
     public ResponseResult listAllTag(){
         List<TagVo> list = tagService.listAllTag();
