@@ -23,4 +23,8 @@ public interface ArticleService extends IService<Article> {
     ResponseResult updateViewCount(Long id);
 
     void saveArticle(ArticleDto articleDto);
+
+    ResponseResult queryArticleList(Integer pageNum, Integer pageSize, String title, String summary);
+
+    ResponseResult searchArticle(Long id);
 }

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hang.constants.SystemConstants;
 import com.hang.dto.ArticleDto;
 import com.hang.entity.Category;
+import com.hang.enums.AppHttpCodeEnum;
 import com.hang.result.ResponseResult;
 import com.hang.entity.Article;
 import com.hang.mapper.ArticleMapper;
@@ -15,10 +16,7 @@ import com.hang.service.TagService;
 import com.hang.utils.BeanCopyUtils;
 import com.hang.utils.RedisCache;
 import com.hang.utils.SecurityUtils;
-import com.hang.vo.ArticleDetailtVo;
-import com.hang.vo.ArticleListVo;
-import com.hang.vo.HotArticleVo;
-import com.hang.vo.PageVo;
+import com.hang.vo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -163,5 +161,35 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         // 然后对article_tag表进行插入(需要把刚刚插入的Article_id查出来)
         Long articleId = article.getId();
         tagService.saveToArticleTag(articleId,articleDto.getTags());
+    }
+
+    @Override
+    public ResponseResult queryArticleList(Integer pageNum, Integer pageSize, String title, String summary) {
+        LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(title!=null,Article::getTitle,title)
+                .like(summary!=null,Article::getSummary,summary)
+                .eq(Article::getStatus,SystemConstants.ARTICLE_STATUS_NORMAL);
+        Page<Article> page = new Page<>(pageNum,pageSize);
+        page(page,queryWrapper);
+        List<Article> records = page.getRecords();
+        List<ArticleContentVo> articleContentVos = BeanCopyUtils.copyBeanList(records, ArticleContentVo.class);
+        return ResponseResult.okResult(new PageVo(articleContentVos,page.getTotal()));
+    }
+
+    @Override
+    public ResponseResult searchArticle(Long id) {
+        // 首先查询文章
+        LambdaQueryWrapper<Article> queryWrapper =new LambdaQueryWrapper<>();
+        queryWrapper.eq(Article::getId,id)
+                .eq(Article::getStatus,SystemConstants.ARTICLE_STATUS_NORMAL);
+        Article article = getBaseMapper().selectOne(queryWrapper);
+        // 再查询文章对应的tag标签
+        if(article == null){
+            return ResponseResult.errorResult(AppHttpCodeEnum.NO_ARTICLE);
+        }
+        List<Long> tags = baseMapper.selectTagByArticleId(id);
+        ArticleInfoWithTagVo articleInfoWithTagVo = BeanCopyUtils.copyBean(article, ArticleInfoWithTagVo.class);
+        articleInfoWithTagVo.setTags(tags);
+        return ResponseResult.okResult(articleInfoWithTagVo);
     }
 }
