@@ -3,6 +3,7 @@ package com.hang.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hang.entity.Link;
 import com.hang.result.ResponseResult;
+import com.hang.vo.PageVo;
 
 
 /**
@@ -13,6 +14,10 @@ import com.hang.result.ResponseResult;
  */
 public interface LinkService extends IService<Link> {
 
+    //查询友链
     ResponseResult getAllLink();
+
+    //分页查询友链
+    PageVo selectLinkPage(Link link, Integer pageNum, Integer pageSize);
 }
 

@@ -2,10 +2,11 @@ package com.hang.entity;
 
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.baomidou.mybatisplus.annotation.TableName;
+
 /**
  * 用户表(SysUser)表实体类
  *
@@ -18,8 +19,10 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @NoArgsConstructor
 @TableName("sys_user")
 public class User {
-    //主键@TableId
+    //主键，禁用雪花算法，使用mysql的主键自增策略
+    @TableId(type = IdType.AUTO)
     private Long id;
+
     //用户名
     private String userName;
     //昵称
@@ -38,16 +41,23 @@ public class User {
     private String sex;
     //头像
     private String avatar;
-    //创建人的用户id
+
+    //字段自增
+    @TableField(fill = FieldFill.INSERT)
     private Long createBy;
-    //创建时间
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
-    //更新人
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateBy;
-    //更新时间
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
+
     //删除标志（0代表未删除，1代表已删除）
     private Integer delFlag;
+
+    //关联角色id数组，非user表字段
+    @TableField(exist = false)
+    private Long[] roleIds;
 
 }
 

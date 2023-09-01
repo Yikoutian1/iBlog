@@ -18,5 +18,8 @@ import java.util.List;
 public interface RoleMapper extends BaseMapper<Role> {
 
     List<String> selectRoleKeyByUserId(@Param("id") Long id);
+
+    //修改用户-①根据id查询用户信息
+    List<Long> selectRoleIdByUserId(Long userId);
 }
 

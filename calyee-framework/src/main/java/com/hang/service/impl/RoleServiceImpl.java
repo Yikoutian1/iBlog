@@ -1,6 +1,7 @@
 package com.hang.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -57,6 +58,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     @Override
+    public List<Role> selectRoleAll() {
+        return list(Wrappers.<Role>lambdaQuery().eq(Role::getStatus, SystemConstants.NORMAL));
+    }
+
+    @Override
     public ResponseResult listByPageInfo(Integer pageNum, Integer pageSize, String roleName, String status) {
         LambdaQueryWrapper<Role> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.like(StringUtils.hasText(roleName), Role::getRoleName, roleName)
@@ -102,6 +108,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
                 .map(memuId -> new RoleMenu(role.getId(), memuId))
                 .collect(Collectors.toList());
         roleMenuService.saveBatch(roleMenuList);
+    }
+
+    //-----------------------修改用户-①根据id查询用户信息----------------------------
+    @Override
+    public List<Long> selectRoleIdByUserId(Long userId) {
+        return getBaseMapper().selectRoleIdByUserId(userId);
     }
 }
 

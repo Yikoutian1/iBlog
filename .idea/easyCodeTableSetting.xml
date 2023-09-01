@@ -370,9 +370,9 @@
               </option>
               <option name="name" value="SgLink" />
               <option name="preName" value="sg_" />
-              <option name="saveModelName" value="calyee-framework" />
+              <option name="saveModelName" value="calyee-admin" />
               <option name="savePackageName" value="com.hang" />
-              <option name="savePath" value="./calyee-framework/src/main/java/com/hang" />
+              <option name="savePath" value="./calyee-admin/src/main/java/com/hang" />
               <option name="templateGroupName" value="MybatisPlus" />
             </TableInfoDTO>
           </value>
@@ -826,6 +826,37 @@
               <option name="saveModelName" value="calyee-admin" />
               <option name="savePackageName" value="com.hang" />
               <option name="savePath" value="./calyee-admin/src/main/java/com/hang" />
+              <option name="templateGroupName" value="MybatisPlus" />
+            </TableInfoDTO>
+          </value>
+        </entry>
+        <entry key="calyee_blog.sys_user_role">
+          <value>
+            <TableInfoDTO>
+              <option name="comment" value="用户和角色关联表" />
+              <option name="fullColumn">
+                <list>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="用户ID" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="userId" />
+                    <option name="type" value="java.lang.Long" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="角色ID" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="roleId" />
+                    <option name="type" value="java.lang.Long" />
+                  </ColumnInfoDTO>
+                </list>
+              </option>
+              <option name="name" value="SysUserRole" />
+              <option name="preName" value="sys_" />
+              <option name="saveModelName" value="calyee-framework" />
+              <option name="savePackageName" value="com.hang" />
+              <option name="savePath" value="./calyee-framework/src/main/java/com/hang" />
               <option name="templateGroupName" value="MybatisPlus" />
             </TableInfoDTO>
           </value>
