@@ -19,8 +19,11 @@ import com.hang.utils.SecurityUtils;
 import com.hang.vo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,12 +40,17 @@ import java.util.stream.Collectors;
  */
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
+
     @Autowired
     private CategoryService categoryService;
     @Autowired
     private TagService tagService;
     @Autowired
     private RedisCache redisCache;
+    @Autowired
+    private DataSourceTransactionManager dataSourceTransactionManager;
+    @Autowired
+    private TransactionDefinition transactionDefinition;
     /**
      * 查询热门文章
      *
@@ -154,13 +162,24 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     @Override
-    public void saveArticle(ArticleDto articleDto) {
-        // 首先需要保存当前前端传回来的数据
-        Article article = BeanCopyUtils.copyBean(articleDto, Article.class);
-        save(article);
-        // 然后对article_tag表进行插入(需要把刚刚插入的Article_id查出来)
-        Long articleId = article.getId();
-        tagService.saveToArticleTag(articleId,articleDto.getTags());
+    public ResponseResult saveArticle(ArticleDto articleDto) {
+        TransactionStatus transactionStatus = dataSourceTransactionManager.getTransaction(transactionDefinition);
+
+        try {
+            // 首先需要保存当前前端传回来的数据
+            Article article = BeanCopyUtils.copyBean(articleDto, Article.class);
+            save(article);
+            // 然后对article_tag表进行插入(需要把刚刚插入的Article_id查出来)
+            Long articleId = article.getId();
+            tagService.saveToArticleTag(articleId,articleDto.getTags());
+
+            dataSourceTransactionManager.commit(transactionStatus);// 手动commit
+            return ResponseResult.okResult();
+        } catch (Exception e) {
+            dataSourceTransactionManager.rollback(transactionStatus);
+            return ResponseResult.errorResult(201, "更新失败");
+        }
+
     }
 
     @Override
@@ -191,5 +210,43 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         ArticleInfoWithTagVo articleInfoWithTagVo = BeanCopyUtils.copyBean(article, ArticleInfoWithTagVo.class);
         articleInfoWithTagVo.setTags(tags);
         return ResponseResult.okResult(articleInfoWithTagVo);
+    }
+
+    @Override
+    public ResponseResult updateArticle(ArticleInfoWithTagVo articleInfoWithTagVo) {
+        TransactionStatus transactionStatus = dataSourceTransactionManager.getTransaction(transactionDefinition);
+
+        try {
+            // 首先更新文章表
+            Article article = BeanCopyUtils.copyBean(articleInfoWithTagVo, Article.class);
+            baseMapper.updateById(article);
+            // 再更新文章标签表
+            List<Long> tags = articleInfoWithTagVo.getTags();
+            Long articleId = articleInfoWithTagVo.getId();
+
+            baseMapper.deleteTagOnArticleTag(articleId);
+            tagService.saveToArticleTag(articleId,tags);
+            dataSourceTransactionManager.commit(transactionStatus);// 手动commit
+            return ResponseResult.okResult();
+        } catch (Exception e) {
+            dataSourceTransactionManager.rollback(transactionStatus);
+            return ResponseResult.errorResult(201, "更新失败");
+        }
+    }
+
+    @Override
+    public ResponseResult deleteArticleById(Long id) {
+        TransactionStatus transactionStatus = dataSourceTransactionManager.getTransaction(transactionDefinition);
+        try {
+            // 删除文章表
+            baseMapper.deleteById(id);
+            // 删除文章标签表
+            baseMapper.deleteTagOnArticleTag(id);
+            dataSourceTransactionManager.commit(transactionStatus);// 手动commit
+            return ResponseResult.okResult();
+        } catch (Exception e) {
+            dataSourceTransactionManager.rollback(transactionStatus);
+            return ResponseResult.errorResult(201, "删除失败");
+        }
     }
 }

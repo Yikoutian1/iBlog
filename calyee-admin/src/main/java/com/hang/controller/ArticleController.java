@@ -3,6 +3,7 @@ package com.hang.controller;
 import com.hang.dto.ArticleDto;
 import com.hang.result.ResponseResult;
 import com.hang.service.ArticleService;
+import com.hang.vo.ArticleInfoWithTagVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class ArticleController {
 
     @PostMapping("/article")
     public ResponseResult article(@RequestBody ArticleDto articleDto) {
-        articleService.saveArticle(articleDto);
+        ResponseResult result = articleService.saveArticle(articleDto);
         return ResponseResult.okResult(articleDto.getThumbnail());
     }
 
@@ -35,5 +36,13 @@ public class ArticleController {
     @GetMapping("/article/{id}")
     public ResponseResult queryArticleList(@PathVariable("id") Long id) {
         return articleService.searchArticle(id);
+    }
+    @PutMapping("/article")
+    public ResponseResult updateArticle(@RequestBody ArticleInfoWithTagVo articleInfoWithTagVo){
+        return articleService.updateArticle(articleInfoWithTagVo);
+    }
+    @DeleteMapping("/article/{id}")
+    public ResponseResult deleteArticleById(@PathVariable("id")Long id){
+        return articleService.deleteArticleById(id);
     }
 }

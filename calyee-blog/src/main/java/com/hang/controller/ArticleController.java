@@ -19,11 +19,6 @@ import org.springframework.web.bind.annotation.*;
 public class ArticleController {
     @Autowired
     private ArticleService articleService;
-//    @GetMapping("/list")
-//    public List<Article> list(){
-//        List<Article> list = articleService.list();
-//        return list;
-//    }
     @GetMapping("/hotArticleList")
     public ResponseResult hotArticleList(){
         // 查询热门文章  封装ResponseResult返回
@@ -42,4 +37,5 @@ public class ArticleController {
     public ResponseResult updateViewCount(@PathVariable Long id){
         return articleService.updateViewCount(id);
     }
+
 }

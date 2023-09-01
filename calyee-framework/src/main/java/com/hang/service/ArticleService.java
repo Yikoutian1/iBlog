@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.hang.dto.ArticleDto;
 import com.hang.result.ResponseResult;
 import com.hang.entity.Article;
+import com.hang.vo.ArticleInfoWithTagVo;
 
 /**
  * @ClassName ArticleService
@@ -22,9 +23,13 @@ public interface ArticleService extends IService<Article> {
 
     ResponseResult updateViewCount(Long id);
 
-    void saveArticle(ArticleDto articleDto);
+    ResponseResult saveArticle(ArticleDto articleDto);
 
     ResponseResult queryArticleList(Integer pageNum, Integer pageSize, String title, String summary);
 
     ResponseResult searchArticle(Long id);
+
+    ResponseResult updateArticle(ArticleInfoWithTagVo articleInfoWithTagVo);
+
+    ResponseResult deleteArticleById(Long id);
 }

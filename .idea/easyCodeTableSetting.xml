@@ -576,9 +576,9 @@
               </option>
               <option name="name" value="SysMenu" />
               <option name="preName" value="sys_" />
-              <option name="saveModelName" value="calyee-framework" />
+              <option name="saveModelName" value="calyee-admin" />
               <option name="savePackageName" value="com.hang" />
-              <option name="savePath" value="./calyee-framework/src/main/java/com/hang" />
+              <option name="savePath" value="./calyee-admin/src/main/java/com/hang" />
               <option name="templateGroupName" value="MybatisPlus" />
             </TableInfoDTO>
           </value>

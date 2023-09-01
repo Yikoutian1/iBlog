@@ -2,6 +2,7 @@ package com.hang.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hang.entity.Menu;
+import com.hang.result.ResponseResult;
 import com.hang.vo.RoutersVo;
 
 import java.util.List;
@@ -18,5 +19,7 @@ public interface MenuService extends IService<Menu> {
     List<String> selectPermsByUserId(Long id);
 
     List<Menu> selectRouterMenuToTreeByUserId(Long userId);
+
+    ResponseResult listMenu(String status, String menuName);
 }
 

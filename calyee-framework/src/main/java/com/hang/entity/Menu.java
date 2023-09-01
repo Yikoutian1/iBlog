@@ -5,6 +5,7 @@ import java.util.Date;
 import java.io.Serializable;
 import java.util.List;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +27,8 @@ import lombok.experimental.Accessors;
 @TableName("sys_menu")
 @Accessors(chain = true)
 public class Menu  {
-    //菜单ID@TableId
+    //菜单ID
+    @TableId
     private Long id;
 
     //菜单名称
@@ -51,21 +53,23 @@ public class Menu  {
     private String perms;
     //菜单图标
     private String icon;
-    //创建者
+
+    @TableField(fill = FieldFill.INSERT)
     private Long createBy;
-    //创建时间
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
-    //更新者
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateBy;
-    //更新时间
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
+
     //备注
     private String remark;
-    
+
     private String delFlag;
 
-    // 子树
-     @TableField(exist = false) // 方法一
+    //由于数据库没有children字段，所以我们要添加@TableField(exist = false)注解让mybatis在查表时不查询这个字段
+    @TableField(exist = false)
     private List<Menu> children;
 
 }

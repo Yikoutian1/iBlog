@@ -30,5 +30,6 @@ public interface TagService extends IService<Tag> {
     List<TagVo> listAllTag();
 
     void saveToArticleTag(Long articleId, List<Long> tags);
+
 }
 

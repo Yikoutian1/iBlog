@@ -5,9 +5,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hang.constants.SystemConstants;
 import com.hang.entity.Menu;
 import com.hang.mapper.MenuMapper;
+import com.hang.result.ResponseResult;
 import com.hang.service.MenuService;
+import com.hang.utils.BeanCopyUtils;
 import com.hang.vo.RoutersVo;
+import com.hang.vo.SysMenuVo;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +51,22 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         return baseMapper.selectPermsByUserId(id);
     }
 
+    /**
+     * 查询权限菜单
+     * @param status
+     * @param menuName
+     * @return
+     */
+    @Override
+    public ResponseResult listMenu(String status, String menuName) {
+        LambdaQueryWrapper<Menu> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(StringUtils.hasText(status),Menu::getStatus,status)
+                .like(StringUtils.hasText(menuName),Menu::getMenuName,menuName);
+        queryWrapper.orderByAsc(Menu::getParentId,Menu::getOrderNum);
+        List<Menu> menus = list(queryWrapper);
+        List<SysMenuVo> sysMenuVos = BeanCopyUtils.copyBeanList(menus, SysMenuVo.class);
+        return ResponseResult.okResult(sysMenuVos);
+    }
     @Override
     public List<Menu> selectRouterMenuToTreeByUserId(Long userId) {
         List<Menu> menusList = null;

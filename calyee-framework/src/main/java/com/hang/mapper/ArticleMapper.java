@@ -17,4 +17,6 @@ import java.util.List;
 @Mapper
 public interface ArticleMapper extends BaseMapper<Article> {
     List<Long> selectTagByArticleId(@Param("articleId") Long id);
+
+    void deleteTagOnArticleTag(@Param("article_id") Long articleId);
 }
