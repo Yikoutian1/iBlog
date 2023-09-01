@@ -21,5 +21,14 @@ public interface MenuService extends IService<Menu> {
     List<Menu> selectRouterMenuToTreeByUserId(Long userId);
 
     ResponseResult listMenu(String status, String menuName);
+
+    ResponseResult edit(Menu menu);
+
+    ResponseResult deleteMenu(Long id);
+
+    ResponseResult treeselect();
+
+    //修改角色-根据角色id查询对应角色菜单列表树
+    List<Long> selectMenuListByRoleId(Long roleId);
 }
 

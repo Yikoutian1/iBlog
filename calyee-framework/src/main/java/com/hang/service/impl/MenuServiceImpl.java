@@ -8,6 +8,8 @@ import com.hang.mapper.MenuMapper;
 import com.hang.result.ResponseResult;
 import com.hang.service.MenuService;
 import com.hang.utils.BeanCopyUtils;
+import com.hang.utils.SystemConverter;
+import com.hang.vo.MenuTreeVo;
 import com.hang.vo.RoutersVo;
 import com.hang.vo.SysMenuVo;
 import org.springframework.stereotype.Service;
@@ -66,6 +68,45 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         List<Menu> menus = list(queryWrapper);
         List<SysMenuVo> sysMenuVos = BeanCopyUtils.copyBeanList(menus, SysMenuVo.class);
         return ResponseResult.okResult(sysMenuVos);
+    }
+
+    @Override
+    public ResponseResult edit(Menu menu) {
+        // 自己选择自己
+        if (menu.getId().equals(menu.getParentId())) {
+            return ResponseResult.errorResult(500,"修改菜单'" + menu.getMenuName() + "'失败，上级菜单不能选择自己");
+        }
+        baseMapper.updateById(menu);
+        return ResponseResult.okResult();
+    }
+
+    @Override
+    public ResponseResult deleteMenu(Long id) {
+        if(hasChild(id)){
+            return ResponseResult.errorResult(500,"存在子菜单不允许删除");
+        }
+        baseMapper.deleteById(id);
+        return ResponseResult.okResult();
+    }
+    //-------------------------------获取菜单树接口-------------------------------
+    @Override
+    public ResponseResult treeselect() {
+        //复用之前的selectAllRouterMenu方法。方法需要参数，参数可以用来进行条件查询，而这个方法不需要条件，所以直接new Menu()传入
+        List<Menu> menus = baseMapper.selectAllRouterMenu();
+        List<MenuTreeVo> options =  SystemConverter.buildMenuSelectTree(menus);
+        return ResponseResult.okResult(options);
+    }
+
+    @Override
+    public List<Long> selectMenuListByRoleId(Long roleId) {
+        return getBaseMapper().selectMenuListByRoleId(roleId);
+    }
+    //-------------------------------删除菜单-是否存在子菜单-------------------------------
+
+    private boolean hasChild(Long menuId) {
+        LambdaQueryWrapper<Menu> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Menu::getParentId,menuId);
+        return count(queryWrapper) != 0;
     }
     @Override
     public List<Menu> selectRouterMenuToTreeByUserId(Long userId) {

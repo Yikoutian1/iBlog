@@ -1,7 +1,9 @@
 package com.hang.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hang.dto.ChangeRoleStatusDto;
 import com.hang.entity.Role;
+import com.hang.result.ResponseResult;
 
 import java.util.List;
 
@@ -15,5 +17,15 @@ import java.util.List;
 public interface RoleService extends IService<Role> {
 
     List<String> selectRoleKeyByUserId(Long id);
+
+    ResponseResult listByPageInfo(Integer pageNum, Integer pageSize, String roleName, String status);
+
+    ResponseResult changeStatus(ChangeRoleStatusDto roleStatusDto);
+
+    //新增角色
+    void insertRole(Role role);
+
+    //修改角色-保存修改好的角色信息
+    void updateRole(Role role);
 }
 
