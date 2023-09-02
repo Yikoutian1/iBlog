@@ -3,6 +3,7 @@ package com.hang.controller;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSON;
+import com.hang.dto.CategoryDto;
 import com.hang.entity.Category;
 import com.hang.enums.AppHttpCodeEnum;
 import com.hang.result.ResponseResult;
@@ -11,11 +12,10 @@ import com.hang.utils.BeanCopyUtils;
 import com.hang.utils.WebUtils;
 import com.hang.vo.CategoryVo;
 import com.hang.vo.ExcelCategoryVo;
+import com.hang.vo.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -58,5 +58,46 @@ public class CategoryController {
             ResponseResult result = ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
             WebUtils.renderString(response, JSON.toJSONString(result));
         }
+    }
+
+    //----------------------------分页查询文章的分类列表---------------------------------
+
+    @GetMapping("/list")
+    public ResponseResult list(Category category, Integer pageNum, Integer pageSize) {
+        PageVo pageVo = categoryService.selectCategoryPage(category,pageNum,pageSize);
+        return ResponseResult.okResult(pageVo);
+    }
+
+    //-----------------------------增加文章的分类--------------------------------------
+
+    @PostMapping
+    public ResponseResult add(@RequestBody CategoryDto categoryDto){
+        Category category = BeanCopyUtils.copyBean(categoryDto, Category.class);
+        categoryService.save(category);
+        return ResponseResult.okResult();
+    }
+
+    //----------------------------删除文章的分类--------------------------------------
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseResult remove(@PathVariable(value = "id")Long id){
+        categoryService.removeById(id);
+        return ResponseResult.okResult();
+    }
+
+    //-----------------------------修改文章的分类--------------------------------------
+
+    @GetMapping(value = "/{id}")
+    //①根据分类的id来查询分类
+    public ResponseResult getInfo(@PathVariable(value = "id")Long id){
+        Category category = categoryService.getById(id);
+        return ResponseResult.okResult(category);
+    }
+
+    @PutMapping
+    //②根据分类的id来修改分类
+    public ResponseResult edit(@RequestBody Category category){
+        categoryService.updateById(category);
+        return ResponseResult.okResult();
     }
 }

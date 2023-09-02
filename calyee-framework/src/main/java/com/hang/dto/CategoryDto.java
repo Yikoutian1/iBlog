@@ -1,25 +1,27 @@
-package com.hang.vo;
+package com.hang.dto;
 
-import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @ClassName CategoryVo
+ * @ClassName CategoryDto
  * @Description TODO
  * @Author QiuLiHang
- * @DATE 2023/8/5 16:59
+ * @DATE 2023/9/1 20:09
  * @Version 1.0
  */
+
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class CategoryVo {
-    private Long id;
-    @ExcelProperty("分类名")
+@NoArgsConstructor
+public class CategoryDto {
+
+    //分类名
     private String name;
     //描述
-    @ExcelProperty("描述")
     private String description;
+    //状态0:正常,1禁用
+    private String status;
+
 }

@@ -2,6 +2,7 @@ package com.hang.controller;
 
 
 
+import com.hang.dto.ChangeUserStatusDto;
 import com.hang.entity.Role;
 import com.hang.entity.User;
 import com.hang.enums.AppHttpCodeEnum;
@@ -82,6 +83,14 @@ public class UserController{
     @PutMapping
     public ResponseResult edit(@RequestBody User user) {
         userService.updateUser(user);
+        return ResponseResult.okResult();
+    }
+    @PutMapping("/changeStatus")
+    public ResponseResult changeStatus(@RequestBody ChangeUserStatusDto changeUserStatusDto){
+        User u = new User();
+        u.setStatus(changeUserStatusDto.getStatus());
+        u.setId(changeUserStatusDto.getUserId());
+        userService.updateById(u);
         return ResponseResult.okResult();
     }
 }
