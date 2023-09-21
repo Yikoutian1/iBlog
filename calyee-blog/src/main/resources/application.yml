@@ -37,8 +37,12 @@ mybatis-plus:
       logic-not-delete-value: 0
       id-type: auto
 
-# 七牛云
+# 七牛云 (已废弃)
 oss:
   accessKey: cuwMLlcQi3v83Q9WmNeqn2FSq2TCvE8C5ok7McfH
   secretKey: V-LBcGJAuptis_hXNsWLuuJg-wioAEBsN9zFiMKT
   bucket: calyee-blog
+# 上传到 linux 服务器
+file:
+  localUrl: E:/Ai/images/
+  linuxUrl: /usr/local/blog-images/

@@ -2,8 +2,10 @@ package com.hang.controller;
 
 import com.hang.result.ResponseResult;
 import com.hang.service.UploadService;
+import com.hang.service.impl.UploadPhotoService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,9 +21,18 @@ import org.springframework.web.multipart.MultipartFile;
 @Api(tags = "上传文件相关接口")
 public class UploadController {
     @Autowired
+    @Qualifier("ossUploadServiceImpl")
     private UploadService uploadService;
+    @Autowired
+    @Qualifier("uploadPhotoService")
+    private UploadPhotoService uploadPhotoService;
+
+//    @PostMapping("/upload")
+//    public ResponseResult uploadImg(MultipartFile img) {
+//        return uploadService.uploadImg(img);
+//    }
     @PostMapping("/upload")
-    public ResponseResult uploadImg(MultipartFile img){
-        return uploadService.uploadImg(img);
+    public ResponseResult uploadImg(MultipartFile img) {
+        return uploadPhotoService.uploadImg(img);
     }
 }

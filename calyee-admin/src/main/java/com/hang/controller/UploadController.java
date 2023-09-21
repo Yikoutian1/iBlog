@@ -4,6 +4,7 @@ import com.hang.result.ResponseResult;
 import com.hang.service.UploadService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,7 @@ import java.io.IOException;
 public class UploadController {
 
     @Autowired
+    @Qualifier("ossUploadServiceImpl")
     private UploadService uploadService;
 
     @PostMapping("/upload")
