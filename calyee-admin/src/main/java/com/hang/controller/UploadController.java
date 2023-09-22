@@ -2,6 +2,7 @@ package com.hang.controller;
 
 import com.hang.result.ResponseResult;
 import com.hang.service.UploadService;
+import com.hang.service.impl.UploadPhotoService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,11 +26,14 @@ public class UploadController {
     @Autowired
     @Qualifier("ossUploadServiceImpl")
     private UploadService uploadService;
+    @Autowired
+    @Qualifier("uploadPhotoService")
+    private UploadPhotoService uploadPhotoService;
 
     @PostMapping("/upload")
     public ResponseResult uploadImg(@RequestParam("img") MultipartFile multipartFile) {
         try {
-            return uploadService.uploadImg(multipartFile);
+            return uploadPhotoService.uploadImg(multipartFile);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("文件上传上传失败");

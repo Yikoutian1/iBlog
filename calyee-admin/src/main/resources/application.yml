@@ -37,3 +37,7 @@ mybatis-plus:
       logic-not-delete-value: 0
       id-type: auto
 
+# 上传到 linux 服务器
+file:
+  localUrl: E:/Ai/images/
+  linuxUrl: /usr/local/blog-images/

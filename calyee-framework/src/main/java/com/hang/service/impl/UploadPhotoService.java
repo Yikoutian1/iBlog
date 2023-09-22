@@ -9,7 +9,7 @@ import com.hang.service.UploadService;
 import com.hang.utils.PathUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.system.ApplicationHome;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +26,7 @@ import java.io.IOException;
  */
 @Service
 @Slf4j
+@ConfigurationProperties(prefix = "file")
 public class UploadPhotoService implements UploadService {
     @Override
     public ResponseResult uploadImg(MultipartFile img) {
@@ -45,9 +46,9 @@ public class UploadPhotoService implements UploadService {
         return ResponseResult.okResult(url);
     }
 
-    @Value("${file.localUrl}")
+    @Value(value = "${file.localUrl}")
     private String localUrl;
-    @Value("${file.linuxUrl}")
+    @Value(value = "${file.linuxUrl}")
     private String linuxUrl;
 
     // 上传文件的方法
@@ -64,7 +65,7 @@ public class UploadPhotoService implements UploadService {
             url = linuxUrl;
         } else if (os.contains(OptionEnum.Windows.toString())) { // windows
             url = localUrl;
-        }else {// 不支持
+        } else {// 不支持
             throw new SystemException(AppHttpCodeEnum.UPLOAD_ERROR);
         }
         // 合并路径
