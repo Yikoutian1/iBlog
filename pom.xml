@@ -95,7 +95,7 @@
                     <!--
                     执行本插件的方法为，在主目录下执行如下命令：
                     mvn package assembly:single
-
+mv
                     对于 IntelliJ IDEA，生成的 JAR 包位于每个模块下的文件夹 target
                     -->
                     <execution>
